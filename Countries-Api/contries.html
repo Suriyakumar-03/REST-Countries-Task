@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+    <title>Document</title>
+</head>
+<body>
+<style>
+            body{
+                background-color: #abf0e9;
+            }
+
+            .h1-text{
+                text-align: center;
+                padding-bottom: 80px;
+            }
+            .card{
+            text-align:center;
+            width:400px;
+            margin-left: 30px;
+            margin-bottom: 20px;
+            }
+
+            .carddivs{
+                display: flex;
+                justify-content: center;
+            }
+
+</style> 
+    
+        <div class="h1-text">
+        
+            <h1>COUNTRIES AND ITS FLAG</h1>
+        
+        </div>
+
+        <div class="country-divs">
+            
+            <div class="row carddivs" id="row-div">
+                
+            </div> 
+
+        </div> 
+       
+
+<script>
+
+    const countriesName = []
+    const countriesflag =[]
+    const countriespopulation =[]
+    const countriesCapital=[]
+    function countriescode(){
+        var xhttp = new XMLHttpRequest();
+
+        setTimeout(() => {
+            if(xhttp.readyState == 4 && xhttp.status == 200){
+                
+                var countriesDetails= (xhttp.responseText);
+                var countriesJSON = JSON.parse(countriesDetails);
+                for (let i=0;i<(countriesJSON.length);i++){
+                    countriesName.push(countriesJSON[i].name);
+                    countriesflag.push(countriesJSON[i].flag)
+                    countriespopulation.push(countriesJSON[i].population);
+                    countriesCapital.push(countriesJSON[i].capital);
+
+                }
+            }  
+            
+        }, 1000);
+        
+        xhttp.open("GET","https://restcountries.eu/rest/v2/all",true);
+        xhttp.send();
+    }
+        
+        
+    countriescode();
+
+                function CreatingCountriesCard(){
+
+                    setTimeout(() => {
+                        
+                     for (let i=0 ; i<countriesName.length; i++){
+
+                       const columndiv = document.createElement("div");
+                            columndiv.setAttribute("class","card ");
+               
+                        const imagetag = document.createElement("img");
+                                imagetag.setAttribute("class","card-img-top");
+                                imagetag.src = countriesflag[i];    
+
+                            const cardbody = document.createElement("div");
+                                cardbody.setAttribute("class","card-body");
+
+                                const cardtitle = document.createElement("h4");
+                                    cardtitle.setAttribute("class","card-title");
+                                    cardtitle.innerHTML = "COUNTRY - "+countriesName[i];
+
+                                const cardcapital = document.createElement("h6");
+                                    cardcapital.setAttribute("class","card-text");
+                                    cardcapital.innerHTML = "CAPITAL - "+countriesCapital[i];
+
+
+                                const cardpara = document.createElement("p");
+                                    cardpara.setAttribute("class","card-text");
+                                    cardpara.innerHTML = "POPULATION: "+countriespopulation[i]
+            
+                        
+                        columndiv.appendChild(imagetag);
+     
+                        cardbody.appendChild(cardtitle);
+                        
+                        cardbody.appendChild(cardpara);
+
+                        cardbody.appendChild(cardcapital);
+
+                        columndiv.appendChild(cardbody);
+
+                        const rowdiv = document.getElementById("row-div");
+                        rowdiv.appendChild(columndiv)
+                
+                     }
+                
+                    }, 2000);
+                }   
+
+
+
+CreatingCountriesCard();
+
+</script>    
+</body>
+</html>
